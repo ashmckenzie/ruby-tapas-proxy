@@ -41,14 +41,13 @@ namespace :deploy do
 
   desc 'More setup.. ensure necessary directories exist, etc'
   task :more_setup do
-    run "mkdir -p #{shared_path}/config #{shared_path}/db"
+    run "mkdir -p #{shared_path}/config"
   end
 
   desc 'Deploy necessary configs into shared/config'
   task :configs do
     put $CONFIG.reject { |x| x == 'deploy' }.to_yaml, "#{shared_path}/config/config.yml"
     run "ln -nfs #{shared_path}/config/config.yml #{release_path}/config/config.yml"
-    run "ln -nfs #{shared_path}/db/database.db #{release_path}/db/database.db"
   end
 
   desc 'Deploy NGiNX site configuration'
