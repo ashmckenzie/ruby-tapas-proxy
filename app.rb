@@ -1,6 +1,8 @@
 require 'bundler/setup'
 Bundler.require(:default, :development)
 
+require 'cgi'
+
 Dir['./config/initialisers/*.rb'].each { |f| require f }
 
 get '/feed' do
@@ -15,7 +17,7 @@ get '/feed' do
   )
   # feed = Feedzirra::Parser::ITunesRSS.parse(raw)
   site = "#{request.scheme}://#{request.host}#{[ 80, 8080 ].include?(request.port) ? '' : ":#{request.port}"}"
-  raw.gsub(/\"(https:\/\/rubytapas.dpdcart.com\/feed\/download\/.+)\"/, '"' + "#{site}/download?url=" + '\1"')
+  raw.gsub(/\"(https:\/\/rubytapas.dpdcart.com\/feed\/download\/[^"]+)\" length=\"(\d+)\"/, '"' + "#{site}/download?length=" + '\2' + "&url=" + '\1" length="\2"')
 end
 
 get '/download' do
@@ -31,6 +33,7 @@ get '/download' do
 
   file_name = uri.path.split('/').last
   attachment(file_name)
+  response['Content-Length'] = params[:length]
 
   stream do |out|
     http.request(request) do |response|
