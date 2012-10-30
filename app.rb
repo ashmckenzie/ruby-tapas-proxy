@@ -18,7 +18,7 @@ get '/feed' do
   # feed = Feedzirra::Parser::ITunesRSS.parse(raw)
   site = "#{request.scheme}://#{request.host}#{[ 80, 8080 ].include?(request.port) ? '' : ":#{request.port}"}"
   # raw.gsub(/\"(https:\/\/rubytapas.dpdcart.com\/feed\/download\/[^"]+)\" length=\"(\d+)\"/, '"' + "#{site}/download?length=" + '\2' + "&url=" + '\1" length="\2"')
-  raw.gsub(/\"(https:\/\/rubytapas.dpdcart.com\/feed\/download\/[^"]+)\" length=\"(\d+)\"/, '"' + "#{site}/download?&url=" + '\1" length="\2"')
+  raw.gsub(/\"(https:\/\/rubytapas.dpdcart.com\/feed\/download\/[^"]+)\" length=\"(\d+)\"/, '"' + "#{site}/download?url=" + '\1" length="\2"')
 end
 
 get '/download' do
