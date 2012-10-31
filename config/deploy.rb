@@ -29,8 +29,6 @@ ssh_options[:forward_agent] = true
 
 role :app, $CONFIG.deploy.ssh_host
 
-require 'capistrano-unicorn'
-
 after "deploy:update", "deploy:cleanup"
 after "deploy:setup", "deploy:more_setup"
 
@@ -38,6 +36,8 @@ before "deploy:create_symlink",
   "deploy:configs",
   "nginx:config",
   "nginx:reload"
+
+require 'capistrano-unicorn'
 
 namespace :deploy do
 

@@ -42,6 +42,7 @@ GEM
     highline (1.6.15)
     i18n (0.6.1)
     json (1.7.5)
+    kgio (2.7.4)
     loofah (1.2.1)
       nokogiri (>= 1.4.4)
     mechanize (2.5.1)
@@ -76,6 +77,7 @@ GEM
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
+    raindrops (0.10.0)
     rake (0.9.2.2)
     rdoc (3.12)
       json (~> 1.4)
@@ -98,6 +100,10 @@ GEM
     unf (0.0.5)
       unf_ext
     unf_ext (0.0.5)
+    unicorn (4.4.0)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
     webrobots (0.0.13)
 
 PLATFORMS
@@ -118,3 +124,4 @@ DEPENDENCIES
   rest-client
   sinatra
   thin
+  unicorn

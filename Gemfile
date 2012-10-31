@@ -6,9 +6,10 @@ gem 'feedzirra'
 gem 'sinatra'
 gem 'foreman'
 gem 'hashie'
-gem 'thin'
+gem 'unicorn'
 
 group :development do
+  gem 'thin'
   gem 'rake'
   gem 'awesome_print'
   gem 'pry'
