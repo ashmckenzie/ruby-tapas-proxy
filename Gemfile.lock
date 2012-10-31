@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:ashmckenzie/capistrano-unicorn.git
-  revision: 3d92d8a3755950079e3fc35bd60f15bfc07d4e97
+  revision: 2b62ade1edaf25b6e711f34083508acd5013becd
   specs:
     capistrano-unicorn (0.1.6)
       capistrano
