@@ -14,4 +14,6 @@ group :development do
   gem 'pry'
   gem 'pry-remote'
   gem 'capistrano'
+  gem 'capistrano_colors'
+  gem 'capistrano-unicorn'
 end
