@@ -43,7 +43,7 @@ namespace :deploy do
 
   desc 'More setup.. ensure necessary directories exist, etc'
   task :more_setup do
-    run "mkdir -p #{shared_path}/config #{shared_path}/config/unicorn"
+    run "mkdir -p #{shared_path}/tmp/pids #{shared_path}/config #{shared_path}/config/unicorn"
   end
 
   desc 'Deploy necessary configs into shared/config'
@@ -80,7 +80,7 @@ namespace :unicorn do
   task :config do
     config = $CONFIG.deploy.unicorn
     config.working_directory = "#{current_release}"
-    config.pid = "#{shared_path}/pids/#{config.app_name}.pid"
+    config.pid = "#{shared_path}/tmp/pids/unicorn.pid"
     config.stdout_log = "#{shared_path}/log/#{config.app_name}_stdout.log"
     config.stderr_log = "#{shared_path}/log/#{config.app_name}_stderr.log"
 
