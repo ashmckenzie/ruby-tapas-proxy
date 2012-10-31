@@ -4,5 +4,5 @@ stderr_path "<%= config['stderr_log'] %>"
 stdout_path "<%= config['stdout_log'] %>"
 
 listen "/tmp/unicorn.<%= config['app_name'] %>.sock"
-worker_processes "<%= config['worker_processes'] %>"
+worker_processes <%= config['worker_processes'] %>
 timeout 30

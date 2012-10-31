@@ -80,7 +80,7 @@ namespace :unicorn do
   task :config do
     config = $CONFIG.deploy.unicorn
     config.working_directory = "#{current_release}"
-    config.pid = "#{shared_path}/tmp/pids/unicorn.pid"
+    config.pid = "#{shared_path}/pids/unicorn.pid"
     config.stdout_log = "#{shared_path}/log/#{config.app_name}_stdout.log"
     config.stderr_log = "#{shared_path}/log/#{config.app_name}_stderr.log"
 
