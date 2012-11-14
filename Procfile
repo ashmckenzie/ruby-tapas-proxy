@@ -1,1 +1,1 @@
-app: rackup config.ru
+app: shotgun config.ru --port 9292
