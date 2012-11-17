@@ -36,6 +36,7 @@ get '/feed' do
 end
 
 get '/download' do
+  cache_control 'no-cache'
   content_type 'application/octet-stream'
 
   episode = RubyTapasProxy::Episode.new(params[:url], config.username, config.password, { :ssl => true })

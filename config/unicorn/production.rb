@@ -5,4 +5,4 @@ stdout_path "/Users/ash/Projects/ruby-tapas-proxy/log/unicorn.log"
 
 listen "/tmp/unicorn.ruby-tapas-proxy.sock"
 worker_processes 2
-timeout 30
+timeout 99999999999999999999999999
