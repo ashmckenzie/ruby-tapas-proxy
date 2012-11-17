@@ -122,6 +122,7 @@ DEPENDENCIES
   capistrano
   capistrano-unicorn!
   capistrano_colors
+  curb
   feedzirra
   foreman
   hashie

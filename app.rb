@@ -33,24 +33,7 @@ get '/feed' do
 
   site_url = RubyTapasProxy::Feed.site_url_from_request(request)
   RubyTapasProxy::Feed.get(params[:api_key], config.feed_url, config.username, config.password, site_url)
-
-  # '<a href="/bypass-protection?api_key=' + params[:api_key] + '">Protected!</a>'
 end
-
-# get '/bypass-protection' do
-#   http = Net::HTTP.new('localhost', 9393)
-
-#   request = Net::HTTP::Get.new('/protected?api_key=757b760e97feee5b5e00bfc9dc3dc38f')
-#   request.basic_auth 'admin', 'admin'
-
-#   x = http.request(request)
-#   x.body
-# end
-
-# get '/protected' do
-#   protected!
-#   "You've broken my protection!"
-# end
 
 get '/download' do
   content_type 'application/octet-stream'
@@ -61,9 +44,13 @@ get '/download' do
   response['Content-Length'] = params[:length]
 
   stream do |out|
-    episode.download do |response|
-      response.read_body do |chunk|
-        out << chunk
+    Curl::Easy.http_get episode.uri.to_s do |c|
+      c.http_auth_types = :basic
+      c.username = 'ash@ashmckenzie.org'
+      c.password = 'jebediah'
+      c.on_body do |data|
+        out << data
+        data.size
       end
     end
   end

@@ -8,6 +8,7 @@ gem 'sinatra-contrib'
 gem 'foreman'
 gem 'hashie'
 gem 'unicorn'
+gem 'curb'
 
 group :development do
   gem 'thin'
