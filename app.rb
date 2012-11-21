@@ -45,14 +45,8 @@ get '/download' do
   response['Content-Length'] = params[:length]
 
   stream do |out|
-    Curl::Easy.http_get episode.uri.to_s do |c|
-      c.http_auth_types = :basic
-      c.username = 'ash@ashmckenzie.org'
-      c.password = 'jebediah'
-      c.on_body do |data|
-        out << data
-        data.size
-      end
+    episode.download do |chunk|
+      out << chunk
     end
   end
 end

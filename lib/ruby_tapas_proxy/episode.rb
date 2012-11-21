@@ -15,13 +15,16 @@ module RubyTapasProxy
     end
 
     def download
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = @opts[:ssl]
-
-      request = Net::HTTP::Get.new(uri.request_uri, { 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1309.0 Safari/537.17' })
-      request.basic_auth @username, @password
-
-      yield http.request(request)
+      Curl::Easy.http_get uri.to_s do |c|
+        c.http_auth_types = :basic
+        c.username = @username
+        c.password = @password
+        c.on_body do |data|
+          # out << data
+          yield data
+          data.size
+        end
+      end
     end
   end
 end
