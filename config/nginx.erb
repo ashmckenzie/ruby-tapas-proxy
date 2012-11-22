@@ -10,13 +10,16 @@ server {
   root <%= config['root'] %>;
   try_files $uri/index.html $uri @unicorn;
 
-  location ~* ^/remote-download?url=(.+) {
+  #location ~* ^/remote-download?url=(.+) {
+  location ~* ^/remote-download {
     internal;
 
     proxy_max_temp_file_size 0;
     proxy_pass_request_headers on;
 
-    set $download_url $1;
+    #set $download_url $1;
+    set $download_url https://rubytapas.dpdcart.com/feed/download/169/RubyTapas026-FFI.mp4;
+
     proxy_pass $download_url;
   }
 
