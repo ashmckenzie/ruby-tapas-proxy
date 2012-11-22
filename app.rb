@@ -48,8 +48,6 @@ get '/download' do
   # headers['X-Accel-Redirect'] = "/remote-download/#{episode.scheme}/#{episode.host}#{episode.path}"
   headers['X-Accel-Redirect'] = "/remote-download?url=#{episode.uri.to_s}"
 
-  ap headers
-
   ''
 end
 
