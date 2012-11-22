@@ -15,7 +15,9 @@ server {
     internal;
 
     proxy_max_temp_file_size 0;
-    proxy_pass_request_headers on;
+    proxy_pass_request_headers off;
+
+    proxy_set_header Authorization "Basic YXNoQGFzaG1ja2VuemllLm9yZzpqZWJlZGlhaA==";
 
     #set $download_url $1;
     set $download_url "https://rubytapas.dpdcart.com/feed/download/169/RubyTapas026-FFI.mp4";
