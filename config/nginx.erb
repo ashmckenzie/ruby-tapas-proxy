@@ -17,6 +17,7 @@ server {
     proxy_max_temp_file_size 0;
     proxy_pass_request_headers off;
 
+    proxy_set_header Host "rubytapas.dpdcart.com";
     proxy_set_header Authorization "Basic YXNoQGFzaG1ja2VuemllLm9yZzpqZWJlZGlhaA==";
 
     #set $download_url $1;
