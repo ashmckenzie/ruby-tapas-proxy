@@ -27,7 +27,10 @@ server {
 
     # FIXME FIXME FIXME
     #proxy_set_header Authorization "Basic YXNoQGFzaG1ja2VuemllLm9yZzpqZWJlZGlhaA==";
-    proxy_set_header Authorization $upstream_http_x_auth;
+
+    set $x_auth $upstream_http_x_auth;
+
+    proxy_set_header Authorization $x_auth;
 
     proxy_pass $download_url;
   }
@@ -41,7 +44,7 @@ server {
   }
 
   access_log  /var/log/nginx/<%= config['app_name'] %>.access.log  combined;
-  error_log  /var/log/nginx/<%= config['app_name'] %>.error.log;
+  error_log  /var/log/nginx/<%= config['app_name'] %>.error.log debug;
 
   # redirect server error pages to the static page /50x.html
   #
