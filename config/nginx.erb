@@ -10,14 +10,6 @@ server {
   root <%= config['root'] %>;
   try_files $uri/index.html $uri @unicorn;
 
-  location @unicorn {
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header Host $http_host;
-    proxy_redirect off;
-    proxy_buffering off;
-    proxy_pass http://unicorn;
-  }
-
   location ~* ^\/remote-download\?url=(.+) {
     internal;
 
@@ -26,6 +18,14 @@ server {
 
     set $download_url $1;
     proxy_pass $download_url;
+  }
+
+  location @unicorn {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_buffering off;
+    proxy_pass http://unicorn;
   }
 
   access_log  /var/log/nginx/<%= config['app_name'] %>.access.log  combined;
