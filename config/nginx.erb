@@ -23,9 +23,6 @@ server {
 
     set $download_url $1;
 
-    # Set download request headers
-    proxy_set_header Host $download_host;
-
     # Do not touch local disks when proxying
     # content to clients
     proxy_max_temp_file_size 0;
