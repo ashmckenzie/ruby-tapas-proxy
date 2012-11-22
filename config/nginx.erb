@@ -18,7 +18,7 @@ server {
     proxy_pass http://unicorn;
   }
 
-  location ~* ^/remote-download?url=(.*?) {
+  location ~* ^/remote-download?url=(.+) {
     internal;
 
     set $download_url $1;
