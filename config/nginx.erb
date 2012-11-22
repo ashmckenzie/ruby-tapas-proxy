@@ -18,7 +18,7 @@ server {
     proxy_pass_request_headers on;
 
     #set $download_url $1;
-    set $download_url https://rubytapas.dpdcart.com/feed/download/169/RubyTapas026-FFI.mp4;
+    set $download_url "https://rubytapas.dpdcart.com/feed/download/169/RubyTapas026-FFI.mp4";
 
     proxy_pass $download_url;
   }
