@@ -2,7 +2,6 @@ require 'bundler/setup'
 Bundler.require(:default, :development)
 
 require 'base64'
-# require 'sinatra/streaming'
 
 Dir['./config/initialisers/*.rb'].each { |f| require f }
 
@@ -43,8 +42,8 @@ get '/download' do
 
   # headers['Content-Length'] = params[:length]
 
-  headers['Authorization'] = %Q{Basic "#{encoded_auth}"}
-  headers['Content-Disposition'] = %Q{attachment; filename="#{episode.filename}"}
+  headers['Authorization'] = %Q{Basic #{encoded_auth}}
+  # headers['Content-Disposition'] = %Q{attachment; filename="#{episode.filename}"}
   # headers['X-Accel-Redirect'] = "/remote-download/#{episode.scheme}/#{episode.host}#{episode.path}"
   headers['X-Accel-Redirect'] = "/remote-download?url=#{episode.uri.to_s}"
 

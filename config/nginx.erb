@@ -21,18 +21,15 @@ server {
   location ~* ^/remote-download?url=(.+) {
     internal;
 
-    set $download_url $1;
-
-    # Do not touch local disks when proxying
-    # content to clients
     proxy_max_temp_file_size 0;
+    proxy_pass_request_headers on;
 
-    # Download the file and send it to client
+    set $download_url $1;
     proxy_pass $download_url;
   }
 
   access_log  /var/log/nginx/<%= config['app_name'] %>.access.log  combined;
-  error_log  /var/log/nginx/<%= config['app_name'] %>.error.log;
+  error_log  /var/log/nginx/<%= config['app_name'] %>.error.log debug;
 
   # redirect server error pages to the static page /50x.html
   #
