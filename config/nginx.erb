@@ -10,20 +10,21 @@ server {
   root <%= config['root'] %>;
   try_files $uri/index.html $uri @unicorn;
 
-  #location ~* ^/remote-download?url=(.+) {
-  location ~* ^/remote-download {
+  location ~* ^/remote-download/(.*?)/(.*?)/(.*) {
     internal;
+
+    resolver 8.8.8.8;
+
+    set $download_scheme $1;
+    set $download_host $2;
+    set $download_uri $3;
+    set $download_url $download_scheme://$download_host/$download_uri;
 
     proxy_max_temp_file_size 0;
     proxy_pass_request_headers off;
 
-    proxy_set_header Host "rubytapas.dpdcart.com";
+    proxy_set_header Host $download_host;
     proxy_set_header Authorization "Basic YXNoQGFzaG1ja2VuemllLm9yZzpqZWJlZGlhaA==";
-
-    resolver 8.8.8.8;
-
-    #set $download_url $1;
-    set $download_url "https://rubytapas.dpdcart.com/feed/download/169/RubyTapas026-FFI.mp4";
 
     proxy_pass $download_url;
   }
