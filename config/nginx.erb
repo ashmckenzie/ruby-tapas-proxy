@@ -20,6 +20,8 @@ server {
     set $download_uri $3;
     set $download_url $download_scheme://$download_host/$download_uri;
 
+    set $x_auth $upstream_http_x_auth;
+
     proxy_max_temp_file_size 0;
     proxy_pass_request_headers off;
 
@@ -27,8 +29,6 @@ server {
 
     # FIXME FIXME FIXME
     #proxy_set_header Authorization "Basic YXNoQGFzaG1ja2VuemllLm9yZzpqZWJlZGlhaA==";
-
-    set $x_auth $upstream_http_x_auth;
 
     proxy_set_header Authorization $x_auth;
 
