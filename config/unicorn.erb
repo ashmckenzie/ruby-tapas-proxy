@@ -7,4 +7,4 @@ preload_app true
 
 listen "/tmp/unicorn.<%= config['app_name'] %>.sock"
 worker_processes <%= config['worker_processes'] %>
-timeout 99999999999999999999999999
+timeout 30

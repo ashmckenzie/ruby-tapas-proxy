@@ -1,7 +1,8 @@
 require 'bundler/setup'
 Bundler.require(:default, :development)
 
-require 'sinatra/streaming'
+require 'base64'
+# require 'sinatra/streaming'
 
 Dir['./config/initialisers/*.rb'].each { |f| require f }
 
@@ -36,20 +37,23 @@ get '/feed' do
 end
 
 get '/download' do
-  cache_control 'no-cache'
-  content_type 'application/octet-stream'
+  episode = RubyTapasProxy::Episode.new(params[:url], { :ssl => true })
 
-  episode = RubyTapasProxy::Episode.new(params[:url], config.username, config.password, { :ssl => true })
+  encoded_auth = Base64.encode64("#{config.username}:#{config.password}").strip
 
-  attachment(episode.filename)
-  response['Content-Length'] = params[:length]
+  # headers['Content-Length'] = params[:length]
 
-  stream do |out|
-    episode.download do |chunk|
-      out << chunk
-    end
-  end
+  headers['Authorization'] = %Q{Basic "#{encoded_auth}"}
+  headers['Content-Disposition'] = %Q{attachment; filename="#{episode.filename}"}
+  # headers['X-Accel-Redirect'] = "/remote-download/#{episode.scheme}/#{episode.host}#{episode.path}"
+  headers['X-Accel-Redirect'] = "/remote-download?url=#{episode.uri.to_s}"
+
+  ap headers
+
+  ''
 end
+
+private
 
 def config
   $APP_CONFIG.ruby_tapas

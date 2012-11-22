@@ -3,10 +3,8 @@ module RubyTapasProxy
 
     attr_reader :uri
 
-    def initialize url, username, password, opts={}
+    def initialize url, opts={}
       @uri = URI.parse(url)
-      @username = username
-      @password = password
       @opts = opts
     end
 
@@ -14,17 +12,16 @@ module RubyTapasProxy
       uri.path.split('/').last
     end
 
-    def download
-      Curl::Easy.http_get uri.to_s do |c|
-        c.http_auth_types = :basic
-        c.username = @username
-        c.password = @password
-        c.on_body do |data|
-          # out << data
-          yield data
-          data.size
-        end
-      end
+    def scheme
+      uri.scheme
+    end
+
+    def host
+      uri.host
+    end
+
+    def path
+      uri.path
     end
   end
 end
