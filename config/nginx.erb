@@ -21,11 +21,11 @@ server {
     set $download_url $download_scheme://$download_host/$download_uri;
 
     proxy_max_temp_file_size 0;
-    #proxy_pass_request_headers off;
+    proxy_pass_request_headers off;
 
     proxy_set_header Host $download_host;
-    proxy_pass_header Authorization;
-    #proxy_set_header Authorization "Basic YXNoQGFzaG1ja2VuemllLm9yZzpqZWJlZGlhaA==";
+    # FIXME FIXME FIXME
+    proxy_set_header Authorization "Basic YXNoQGFzaG1ja2VuemllLm9yZzpqZWJlZGlhaA==";
 
     proxy_pass $download_url;
   }
