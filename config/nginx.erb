@@ -18,7 +18,7 @@ server {
     proxy_pass http://unicorn;
   }
 
-  location ~* ^/remote-download?url=(.+) {
+  location ~* ^\/remote-download\?url=(.+) {
     internal;
 
     proxy_max_temp_file_size 0;
