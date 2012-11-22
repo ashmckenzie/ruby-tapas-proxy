@@ -39,7 +39,7 @@ get '/download' do
   episode = RubyTapasProxy::Episode.new(params[:url], { :ssl => true })
   encoded_auth = Base64.encode64("#{config.username}:#{config.password}").strip
 
-  headers['Authorization'] = %Q{Basic #{encoded_auth}}
+  headers['X-Auth'] = %Q{Basic #{encoded_auth}}
   headers['X-Accel-Redirect'] = "/remote-download/#{episode.scheme}/#{episode.host}#{episode.path}"
 
   ''
