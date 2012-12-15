@@ -1,4 +1,4 @@
-upstream unicorn {
+upstream <%= config['app_name'] %>-unicorn {
   server unix:/tmp/unicorn.<%= config['app_name'] %>.sock fail_timeout=0;
 }
 
@@ -8,7 +8,7 @@ server {
 
   server_name  <%= config['server_name'] %>;
   root <%= config['root'] %>;
-  try_files $uri/index.html $uri @unicorn;
+  try_files $uri/index.html $uri @<%= config['app_name'] %>-unicorn;
 
   location ~* ^/remote-download/(.*?)/(.*?)/(.*) {
     internal;
@@ -36,12 +36,12 @@ server {
     proxy_pass $download_url;
   }
 
-  location @unicorn {
+  location @<%= config['app_name'] %>-unicorn {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
     proxy_buffering off;
-    proxy_pass http://unicorn;
+    proxy_pass http://<%= config['app_name'] %>-unicorn;
   }
 
   access_log  /var/log/nginx/<%= config['app_name'] %>.access.log  combined;
