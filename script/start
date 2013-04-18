@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source /etc/profile
+
+cd /home/apps/ruby-tapas-proxy/current
+bundle exec unicorn -c /home/apps/ruby-tapas-proxy/current/config/unicorn/production.rb -E production -D
