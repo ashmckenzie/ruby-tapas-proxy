@@ -1,7 +1,6 @@
+require 'forwardable'
 require 'bundler/setup'
 Bundler.require(:default)
-
-require 'forwardable'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib/ruby_tapas_proxy/')
 
@@ -14,20 +13,6 @@ CONFIG = RubyTapasProxy::Config::Base.new
 before do
   halt 401, 'Access denied' unless CONFIG.api_key_valid?(params[:api_key])
 end
-
-# helpers do
-#   def protected!
-#     unless authorized?
-#       response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
-#       throw(:halt, [401, "Not authorized\n"])
-#     end
-#   end
-
-#   def authorized?
-#     @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-#     @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['admin', 'admin']
-#   end
-# end
 
 get '/' do
   # Nothing :)
