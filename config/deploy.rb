@@ -1,33 +1,37 @@
-require 'capistrano_colors'
+require 'bundler/setup'
+Bundler.require(:default, :deploy)
+
+# require 'capistrano_colors'
+
+require 'yaml'
+require 'hashie'
+require 'erb'
+
+CONFIG = Hashie::Mash.new(YAML.load_file('./deploy.yml'))
 
 set :bundle_cmd, '. /etc/profile && bundle'
 require "bundler/capistrano"
 
-require 'yaml'
-require 'erb'
-
-require File.expand_path(File.join('config', 'initialisers', '00_config'))
-
 set :application, "Ruby Tapas Proxy"
-set :repository, $CONFIG.deploy.repo.url
-set :branch, $CONFIG.deploy.repo.branch
+set :repository, CONFIG.repo.url
+set :branch, CONFIG.repo.branch
 
 set :scm, :git
 set :scm_verbose, true
 
-set :deploy_to, "#{$CONFIG.deploy.base}/#{$APP_CONFIG.name}"
+set :deploy_to, "#{CONFIG.base}/#{$APP_CONFIG.name}"
 set :deploy_via, :remote_cache
 
 set :keep_releases, 3
 set :use_sudo, false
 set :normalize_asset_timestamps, false
 
-set :user, $CONFIG.deploy.ssh_user
-ssh_options[:port] = $CONFIG.deploy.ssh_port
-ssh_options[:keys] = eval($CONFIG.deploy.ssh_key)
+set :user, CONFIG.ssh_user
+ssh_options[:port] = CONFIG.ssh_port
+ssh_options[:keys] = eval(CONFIG.ssh_key)
 ssh_options[:forward_agent] = true
 
-role :app, $CONFIG.deploy.ssh_host
+role :app, CONFIG.ssh_host
 
 after "deploy:update", "deploy:cleanup"
 after "deploy:setup", "deploy:more_setup"
@@ -37,7 +41,7 @@ before "deploy:create_symlink",
   "nginx:config",
   "nginx:reload"
 
-require 'capistrano-unicorn'
+# require 'capistrano-unicorn'
 
 namespace :deploy do
 
@@ -48,7 +52,7 @@ namespace :deploy do
 
   desc 'Deploy necessary configs into shared/config'
   task :configs do
-    put $CONFIG.reject { |x| x == 'deploy' }.to_yaml, "#{shared_path}/config/config.yml"
+    put CONFIG.reject { |x| x == 'deploy' }.to_yaml, "#{shared_path}/config/config.yml"
     run "ln -nfs #{shared_path}/config/config.yml #{release_path}/config/config.yml"
   end
 end
@@ -57,7 +61,7 @@ namespace :nginx do
 
   desc 'Deploy nginx site configuration'
   task :config do
-    config = $CONFIG.deploy.nginx
+    config = CONFIG.nginx
 
     nginx_base_dir = "/etc/nginx"
     nginx_available_dir = "#{nginx_base_dir}/sites-available"
@@ -78,7 +82,7 @@ namespace :unicorn do
 
   desc 'Deploy unicorn configuration'
   task :config do
-    config = $CONFIG.deploy.unicorn
+    config = CONFIG.unicorn
     config.working_directory = "#{current_release}"
     config.pid = "#{shared_path}/pids/unicorn.pid"
     config.stdout_log = "#{shared_path}/log/#{config.app_name}_stdout.log"
