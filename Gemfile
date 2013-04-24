@@ -18,5 +18,5 @@ end
 group :deploy do
   gem 'capistrano'
   gem 'capistrano_colors'
-  gem 'capistrano-unicorn', :git => 'git@github.com:ashmckenzie/capistrano-unicorn.git'
+  gem 'capistrano-unicorn', require: false, git: 'git@github.com:ashmckenzie/capistrano-unicorn.git'
 end
