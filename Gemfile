@@ -13,6 +13,7 @@ group :development do
   gem 'thin'
   gem 'awesome_print'
   gem 'pry'
+  gem 'pry-debugger'
 end
 
 group :deploy do

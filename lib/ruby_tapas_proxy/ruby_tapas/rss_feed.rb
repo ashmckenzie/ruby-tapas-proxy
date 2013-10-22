@@ -11,7 +11,8 @@ module RubyTapasProxy
       end
 
       def load
-        rewrite_urls(fetch)
+        rss_feed = rewrite_urls(fetch)
+        filter_out_non_downloadable_episodes(rss_feed)
       end
 
       private
@@ -21,6 +22,18 @@ module RubyTapasProxy
       def rewrite_urls input
         regex = Regexp.new('"(' + ruby_tapas_config.download_base_url + '/[^"]+)"')
         input.gsub(regex, '"' + "#{site_url}/download?api_key=#{config.api_key}&amp;url=" + '\1"')
+      end
+
+      def filter_out_non_downloadable_episodes input
+        doc = Nokogiri.XML(input)
+
+        doc.xpath('rss/channel/item').each do |item|
+          if item.xpath('enclosure').empty?
+            item.remove
+          end
+        end
+
+        doc.to_s
       end
 
       def fetch
